@@ -1,0 +1,256 @@
+/* GLOBAL STYLES */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    line-height: 1.6;
+}
+
+
+/* HEADER */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 60px;
+    background: #020617;
+    border-bottom: 1px solid #1e293b;
+}
+
+.profile h1 {
+    font-size: 28px;
+    color: #38bdf8;
+}
+
+.profile p {
+    font-size: 14px;
+    color: #94a3b8;
+    margin: 5px 0;
+}
+
+.profile a {
+    display: block;
+    font-size: 14px;
+    color: #38bdf8;
+    text-decoration: none;
+}
+
+
+/* NAVIGATION */
+
+.navbar {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.navbar li a {
+    text-decoration: none;
+    color: #e2e8f0;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.navbar li a:hover {
+    color: #38bdf8;
+}
+
+
+/* SECTIONS */
+
+section {
+    padding: 70px 120px;
+}
+
+section h2 {
+    font-size: 28px;
+    margin-bottom: 25px;
+    color: #38bdf8;
+}
+
+
+/* ABOUT */
+
+.about p {
+    max-width: 700px;
+    color: #cbd5f5;
+}
+
+
+/* SKILLS */
+
+.skills ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    list-style: none;
+}
+
+.skills li {
+    background: #1e293b;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.skills li:hover {
+    background: #38bdf8;
+    color: #020617;
+}
+
+
+/* EXPERIENCE */
+
+.exp {
+    background: #1e293b;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.exp:hover {
+    transform: translateY(-5px);
+    background: #334155;
+}
+
+.exp h3 {
+    margin-bottom: 8px;
+    color: #38bdf8;
+}
+
+
+/* PROJECT SECTION */
+
+#projects {
+    padding: 70px 120px;
+}
+
+#projects h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #38bdf8;
+}
+
+.project_cl {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+.project {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #334155;
+    transition: 0.35s ease;
+    cursor: pointer;
+}
+
+.project:hover {
+    transform: translateY(-8px);
+    background: #334155;
+    border-color: #38bdf8;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.project h3 {
+    color: #38bdf8;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.project p {
+    color: #cbd5f5;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* CONTACT */
+
+.contact p {
+    margin: 6px 0;
+}
+
+
+/* FOOTER */
+
+footer {
+    background: #020617;
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 1px solid #1e293b;
+}
+
+footer h3 {
+    margin-bottom: 15px;
+}
+
+.social-links {
+    margin-bottom: 15px;
+}
+
+.social-links a {
+    margin: 0 12px;
+    font-size: 22px;
+    color: #38bdf8;
+    transition: 0.3s;
+}
+
+.social-links a:hover {
+    color: #ffffff;
+    transform: scale(1.2);
+}
+
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width:900px) {
+    header {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .navbar {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    section {
+        padding: 50px 40px;
+    }
+}
+
+
+/* Add to style.css */
+
+section,
+.project,
+.exp {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.7s ease-out;
+}
+
+section.visible,
+.project.visible,
+.exp.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* Active nav link */
+
+.navbar a.active {
+    color: #38bdf8;
+    border-bottom: 2px solid #38bdf8;
+}
