@@ -1,0 +1,23 @@
+# Runs a production build on every push/PR so broken code never reaches main.
+# Actual deployment is handled by Vercel's GitHub integration (see README) —
+# this workflow is a safety check, not the deploy step.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm install
+      - run: npm run build

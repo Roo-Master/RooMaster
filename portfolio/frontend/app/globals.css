@@ -1,0 +1,540 @@
+/* GLOBAL STYLES */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    line-height: 1.6;
+    position: relative;
+    overflow-x: hidden;
+}
+
+a {
+    outline-offset: 4px;
+}
+
+
+/* Skip link for keyboard/screen reader users */
+
+.skip-link {
+    position: absolute;
+    left: -999px;
+    top: auto;
+    background: #38bdf8;
+    color: #020617;
+    padding: 10px 16px;
+    border-radius: 0 0 8px 0;
+    font-weight: 600;
+    z-index: 100;
+}
+
+.skip-link:focus {
+    left: 0;
+    top: 0;
+}
+
+
+/* AMBIENT BACKGROUND
+   A quiet node/network field behind the whole page: a faint dot grid
+   (circuit-board vias) plus two soft glow orbs that drift slowly.
+   Both are fixed to the viewport and sit behind all content. */
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+
+/* Dot grid layer */
+
+body::before {
+    z-index: -2;
+    background-image: radial-gradient(circle, rgba(148, 163, 184, 0.35) 1px, transparent 1px);
+    background-size: 34px 34px;
+    background-position: 0 0;
+    animation: twinkle 6s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+    0%,
+    100% {
+        opacity: 0.28;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+
+/* Drifting glow orbs layer */
+
+body::after {
+    z-index: -1;
+    background: radial-gradient(600px circle at 15% 20%, rgba(56, 189, 248, 0.16), transparent 60%), radial-gradient(500px circle at 85% 70%, rgba(129, 140, 248, 0.14), transparent 60%);
+    animation: drift 24s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    100% {
+        transform: translate(-3%, 3%) scale(1.06);
+    }
+}
+
+
+/* HEADER */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 60px;
+    background: #020617;
+    border-bottom: 1px solid #1e293b;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.profile h1 {
+    font-size: 28px;
+    background: linear-gradient(90deg, #38bdf8, #818cf8, #38bdf8);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 6s linear infinite;
+}
+
+@keyframes shimmer {
+    to {
+        background-position: 200% center;
+    }
+}
+
+.profile .tagline {
+    font-size: 14px;
+    color: #94a3b8;
+    margin: 5px 0;
+    min-height: 20px;
+}
+
+.profile .tagline::after {
+    content: "";
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    margin-left: 4px;
+    vertical-align: middle;
+    background: #38bdf8;
+    animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+    to {
+        opacity: 0;
+    }
+}
+
+.profile-contact {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.profile-contact a {
+    font-size: 14px;
+    color: #38bdf8;
+    text-decoration: none;
+}
+
+.profile-contact a:hover,
+.profile-contact a:focus-visible {
+    text-decoration: underline;
+}
+
+
+/* NAVIGATION */
+
+.nav-toggle {
+    display: none;
+    background: none;
+    border: 1px solid #334155;
+    color: #e2e8f0;
+    font-size: 20px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.navbar {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.navbar li a {
+    text-decoration: none;
+    color: #e2e8f0;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.navbar li a:hover,
+.navbar li a:focus-visible {
+    color: #38bdf8;
+}
+
+
+/* SECTIONS */
+
+section {
+    padding: 70px 120px;
+}
+
+section h2 {
+    font-size: 28px;
+    margin-bottom: 25px;
+    color: #38bdf8;
+}
+
+
+/* ABOUT */
+
+.about p {
+    max-width: 700px;
+    color: #cbd5f5;
+}
+
+
+/* SKILLS */
+
+.skills-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px;
+}
+
+.skill-group h3 {
+    font-size: 15px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+}
+
+.skills ul,
+.skill-group ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    list-style: none;
+}
+
+.skills li,
+.skill-group li {
+    background: rgba(30, 41, 59, 0.85);
+    border: 1px solid #334155;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: 0.3s;
+    backdrop-filter: blur(2px);
+}
+
+.skills li:hover,
+.skill-group li:hover {
+    background: #38bdf8;
+    color: #020617;
+    border-color: #38bdf8;
+}
+
+
+/* EXPERIENCE */
+
+.experience-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 22px;
+}
+
+.exp {
+    background: rgba(30, 41, 59, 0.85);
+    padding: 22px;
+    border-radius: 10px;
+    border: 1px solid #334155;
+    transition: 0.3s;
+    backdrop-filter: blur(2px);
+    display: flex;
+    flex-direction: column;
+}
+
+.exp:hover {
+    transform: translateY(-5px);
+    background: #334155;
+    border-color: #38bdf8;
+}
+
+.exp h3 {
+    margin-bottom: 8px;
+    color: #38bdf8;
+    font-size: 17px;
+}
+
+.exp p {
+    color: #cbd5f5;
+    font-size: 14px;
+    line-height: 1.5;
+    flex-grow: 1;
+    margin-bottom: 14px;
+}
+
+.exp-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+}
+
+.exp-tags li {
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: #7dd3fc;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+/* PROJECT SECTION */
+
+#projects {
+    padding: 70px 120px;
+}
+
+#projects h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #38bdf8;
+}
+
+.project_cl {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+.project {
+    position: relative;
+    overflow: hidden;
+    background: rgba(30, 41, 59, 0.85);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #334155;
+    transition: 0.35s ease;
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(2px);
+}
+
+.project::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+    transition: left 0.6s ease;
+    pointer-events: none;
+}
+
+.project:hover::before {
+    left: 130%;
+}
+
+.project:hover {
+    transform: translateY(-8px);
+    background: #334155;
+    border-color: #38bdf8;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.project h3 {
+    color: #38bdf8;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.project p {
+    color: #cbd5f5;
+    font-size: 14px;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+.project-links {
+    margin-top: 15px;
+}
+
+.project-link {
+    color: #38bdf8;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.project-link:hover,
+.project-link:focus-visible {
+    text-decoration: underline;
+}
+
+
+/* CONTACT */
+
+.contact p {
+    margin: 6px 0;
+}
+
+.contact a {
+    color: #38bdf8;
+    text-decoration: none;
+}
+
+.contact a:hover,
+.contact a:focus-visible {
+    text-decoration: underline;
+}
+
+
+/* FOOTER */
+
+footer {
+    background: #020617;
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 1px solid #1e293b;
+}
+
+footer h3 {
+    margin-bottom: 15px;
+}
+
+.social-links {
+    margin-bottom: 15px;
+}
+
+.social-links a {
+    margin: 0 12px;
+    font-size: 22px;
+    color: #38bdf8;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.social-links a:hover,
+.social-links a:focus-visible {
+    color: #ffffff;
+    transform: scale(1.2);
+}
+
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width: 900px) {
+    header {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    .nav-toggle {
+        display: inline-block;
+    }
+    .navbar {
+        display: none;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        text-align: center;
+        padding-top: 15px;
+    }
+    .navbar.open {
+        display: flex;
+    }
+    section {
+        padding: 50px 40px;
+    }
+    body::before {
+        background-size: 26px 26px;
+    }
+}
+
+
+/* Scroll reveal animations */
+
+section,
+.project,
+.exp {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.7s ease-out;
+}
+
+section.visible,
+.project.visible,
+.exp.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* Respect users who prefer less motion */
+
+@media (prefers-reduced-motion: reduce) {
+    html,
+    section,
+    .project,
+    .exp {
+        scroll-behavior: auto;
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    body::before,
+    body::after {
+        animation: none !important;
+    }
+    .profile h1 {
+        animation: none !important;
+        background-position: 0 center;
+    }
+    .profile .tagline::after {
+        animation: none !important;
+    }
+    .project::before {
+        display: none !important;
+    }
+}
+
+
+/* Active nav link */
+
+.navbar a.active {
+    color: #38bdf8;
+    border-bottom: 2px solid #38bdf8;
+}
