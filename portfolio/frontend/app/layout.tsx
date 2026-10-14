@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Analytics from "@/components/Analytics";
+import { site } from "@/data/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://your-domain-or-username.vercel.app"),
-  title: "Okoth Reagan | Full-Stack Developer Portfolio",
+  title: "Okoth Reagan | Full-Stack Developer (Java, Flutter, Python) | Open to Work",
   description:
-    "Portfolio of Okoth Reagan, a full-stack developer and software engineering student specializing in Java, Flutter, Python, and cloud-based solutions.",
+    "Okoth Reagan is a full-stack developer and software engineering student in Kisumu, Kenya, building Java, Flutter and Python applications. See projects, skills and how to hire him.",
   authors: [{ name: "Okoth Reagan" }],
   icons: {
     icon: "/favicon.svg",
@@ -40,10 +42,25 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: site.name,
+              jobTitle: site.role,
+              address: { "@type": "PostalAddress", addressLocality: "Kisumu", addressCountry: "KE" },
+              sameAs: [site.github, site.linkedin].filter(Boolean),
+              knowsAbout: site.coreStack,
+            }),
+          }}
+        />
         <a className="skip-link" href="#main">
           Skip to content
         </a>
         {children}
+        <Analytics />
       </body>
     </html>
   );

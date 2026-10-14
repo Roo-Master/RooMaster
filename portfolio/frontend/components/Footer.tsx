@@ -22,6 +22,11 @@ export default function Footer() {
       </div>
 
       <p>&copy; {new Date().getFullYear()} Okoth Reagan | All Rights Reserved</p>
+      <p className="privacy-note">
+        This site records anonymous visit statistics (page viewed, approximate
+        location, device and browser). IP addresses are never stored, and
+        browsers sending Do Not Track are not counted.
+      </p>
     </footer>
   );
 }

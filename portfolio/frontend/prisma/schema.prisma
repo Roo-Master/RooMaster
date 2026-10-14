@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Visit {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  path        String
+  referrer    String?
+  country     String?
+  city        String?
+  device      String   // mobile | tablet | desktop | bot
+  browser     String
+  os          String
+  visitorHash String   // salted SHA-256 of IP + user agent, never the raw IP
+  userAgent   String?
+
+  @@index([createdAt])
+  @@index([visitorHash])
+  @@index([path])
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  title       String
+  description String
+  tech        String[]
+  repoUrl     String?
+  demoUrl     String?
+  impact      String?  // what it proves / real outcome (only real facts)
+  featured    Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  published   Boolean  @default(true)
+}
+
+model Skill {
+  id        Int    @id @default(autoincrement())
+  name      String
+  sortOrder Int    @default(0)
+}
+
+model Experience {
+  id        Int    @id @default(autoincrement())
+  title     String
+  body      String // plain text; wrap words in **double asterisks** for bold
+  sortOrder Int    @default(0)
+}
+
+model Message {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  name        String
+  email       String
+  body        String
+  read        Boolean  @default(false)
+  visitorHash String
+
+  @@index([createdAt])
+  @@index([visitorHash])
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  type        String   // cv_download | email_click | github_click | ...
+  visitorHash String
+
+  @@index([type, createdAt])
+}
