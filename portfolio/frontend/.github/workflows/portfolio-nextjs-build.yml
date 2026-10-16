@@ -1,0 +1,38 @@
+name: Portfolio Next.js build
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "portfolio/frontend/**"
+      - ".github/workflows/portfolio-nextjs-build.yml"
+  push:
+    branches: [main]
+    paths:
+      - "portfolio/frontend/**"
+      - ".github/workflows/portfolio-nextjs-build.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Next.js production build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: portfolio/frontend
+    # Disposable local-only values for Prisma; no production database connection.
+    env:
+      DATABASE_URL: postgresql://ci:ci@127.0.0.1:5432/ci?schema=public
+      DIRECT_URL: postgresql://ci:ci@127.0.0.1:5432/ci?schema=public
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: portfolio/frontend/package-lock.json
+      - run: npm ci
+      - run: npm run build
