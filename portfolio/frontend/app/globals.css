@@ -756,3 +756,195 @@ section.visible,
 @media (prefers-reduced-motion: reduce) {
     .pulse { animation: none; }
 }
+
+
+/* ANIMATION LAYER
+   Reveal uses keyframes (not transitions) so it can be staggered with
+   --reveal-delay without also delaying hover effects. Everything animates
+   only transform/opacity, which stays smooth on mid-range phones. */
+
+@keyframes rise {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pop {
+    from { opacity: 0; transform: translateY(10px) scale(0.92); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes drift {
+    from { transform: translate3d(-4%, -2%, 0) scale(1); }
+    to   { transform: translate3d(4%, 3%, 0) scale(1.12); }
+}
+
+/* Scroll reveal: replaces the old `transition: all` (which also slowed hover
+   and let the later `.visible` rule cancel the hover lift). */
+section,
+.project,
+.exp {
+    transition: none;
+}
+
+section.visible,
+.project.visible,
+.exp.visible {
+    animation: rise 0.7s ease-out backwards;
+    animation-delay: var(--reveal-delay, 0ms);
+}
+
+/* Cards: hover lift now actually works, with a soft glow */
+.project.visible,
+.exp.visible {
+    transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project.visible:hover,
+.project.visible:focus-within {
+    transform: translateY(-8px);
+    background: #334155;
+    border-color: #38bdf8;
+    box-shadow: 0 14px 32px rgba(56, 189, 248, 0.16), 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.exp.visible:hover {
+    transform: translateY(-5px);
+    background: #334155;
+}
+
+/* Hero: the section itself is always shown; its pieces rise in one by one */
+.hero {
+    opacity: 1;
+    transform: none;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.hero.visible { animation: none; }
+
+.hero > * { opacity: 0; }
+
+.hero.visible > * { animation: rise 0.7s ease-out backwards; opacity: 1; }
+.hero.visible > :nth-child(1) { animation-delay: 0.05s; }
+.hero.visible > :nth-child(2) { animation-delay: 0.15s; }
+.hero.visible > :nth-child(3) { animation-delay: 0.25s; }
+.hero.visible > :nth-child(4) { animation-delay: 0.35s; }
+.hero.visible > :nth-child(5) { animation-delay: 0.45s; }
+.hero.visible > :nth-child(6) { animation-delay: 0.55s; }
+
+/* Slow, dim glow behind the hero text (transform-only, no blur filter) */
+.hero::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -30%;
+    right: -10%;
+    width: 70%;
+    height: 140%;
+    background: radial-gradient(closest-side, rgba(56, 189, 248, 0.14), rgba(56, 189, 248, 0) 70%);
+    animation: drift 14s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+
+/* Chips pop in sequentially, then lift on hover */
+.hero.visible .hero-stack li,
+.skills.visible li {
+    animation: pop 0.45s ease-out backwards;
+    animation-delay: calc(var(--i, 0) * 45ms + 0.3s);
+}
+
+.skills li,
+.hero-stack li {
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+}
+
+.skills li:hover { transform: translateY(-3px); }
+.hero-stack li:hover { transform: translateY(-3px); border-color: #38bdf8; color: #38bdf8; }
+
+/* Primary buttons: gentle glow on hover */
+.btn-primary:hover,
+.btn-primary:focus-visible { box-shadow: 0 8px 22px rgba(56, 189, 248, 0.35); }
+
+/* Scroll progress bar (sits above the sticky header, z-index 50) */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #38bdf8, #7dd3fc);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    z-index: 100;
+    pointer-events: none;
+}
+
+/* Reduced motion: no movement, content just appears */
+@media (prefers-reduced-motion: reduce) {
+    section,
+    .project,
+    .exp,
+    .hero > *,
+    .skills li,
+    .hero-stack li,
+    .hero::before {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .hero > * { opacity: 1 !important; }
+    .scroll-progress { display: none; }
+}
+
+/* AI LAYER: neural-network backdrop and typed prompt line */
+.neural-bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* behind all content; body background still shows beneath */
+    pointer-events: none;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+.hero-prompt {
+    display: inline-block;
+    margin: 0 0 24px;
+    padding: 8px 16px;
+    font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+    font-size: 15px;
+    color: #7dd3fc;
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 8px;
+    min-height: 22px;
+}
+
+.hero-prompt-sign { color: #4ade80; margin-right: 4px; }
+
+.hero-prompt-caret {
+    display: inline-block;
+    width: 8px;
+    height: 1.05em;
+    margin-left: 3px;
+    vertical-align: text-bottom;
+    background: #7dd3fc;
+    animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+
+.hero.visible > :nth-child(7) { animation-delay: 0.65s; }
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-prompt-caret { animation: none; }
+}

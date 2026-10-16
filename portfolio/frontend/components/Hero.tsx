@@ -1,5 +1,6 @@
 import Reveal from "./Reveal";
 import TrackedLink from "./TrackedLink";
+import TypedPrompt from "./TypedPrompt";
 import { site } from "@/data/site";
 
 export default function Hero() {
@@ -16,6 +17,7 @@ export default function Hero() {
 
       <h2 className="hero-headline">{site.headline}</h2>
       <p className="hero-summary">{site.summary}</p>
+      <TypedPrompt />
 
       <div className="hero-cta">
         {site.cvUrl && (
@@ -55,7 +57,7 @@ export default function Hero() {
 
       {site.coreStack.length > 0 && (
         <ul className="hero-stack" aria-label="Core stack">
-          {site.coreStack.map((t) => <li key={t}>{t}</li>)}
+          {site.coreStack.map((t, i) => <li key={t} style={{ "--i": i } as React.CSSProperties}>{t}</li>)}
         </ul>
       )}
     </Reveal>
