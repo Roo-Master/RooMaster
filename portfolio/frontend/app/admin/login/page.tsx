@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { useId, useState } from "react";
 
 export const metadata: Metadata = {
   title: "Admin Login",
@@ -14,45 +15,107 @@ export default function LoginPage({ searchParams }: LoginPageProps) {
 
   return (
     <main className="admin-login">
-      <form method="POST" action="/api/admin/login" className="admin-card" noValidate>
-        <header className="admin-card__header">
-          <h1 className="admin-card__title">Admin Login</h1>
-          <p className="admin-card__subtitle">
-            Sign in to access the administration dashboard.
-          </p>
-        </header>
+      <LoginForm hasError={hasError} />
+    </main>
+  );
+}
 
-        <div className="admin-field">
-          <label htmlFor="password" className="admin-field__label">
-            Password
-          </label>
+function LoginForm({ hasError }: { hasError: boolean }) {
+  const [showPassword, setShowPassword] = useState(false);
+  const passwordId = useId();
+  const errorId = `${passwordId}-error`;
+  const toggleLabel = showPassword ? "Hide password" : "Show password";
+
+  return (
+    <form method="POST" action="/api/admin/login" className="admin-card" noValidate>
+      <header className="admin-card__header">
+        <h1 className="admin-card__title">Admin Login</h1>
+        <p className="admin-card__subtitle">
+          Sign in to access the administration dashboard.
+        </p>
+      </header>
+
+      <div className="admin-field">
+        <label htmlFor={passwordId} className="admin-field__label">
+          Password
+        </label>
+
+        <div className="admin-field__control">
           <input
-            id="password"
+            id={passwordId}
             name="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             className="admin-field__input"
             placeholder="Enter your password"
             autoComplete="current-password"
             required
             autoFocus
             aria-invalid={hasError}
-            aria-describedby={hasError ? "password-error" : undefined}
+            aria-describedby={hasError ? errorId : undefined}
           />
-          {hasError && (
-            <p id="password-error" className="admin-error" role="alert">
-              Incorrect password. Please try again.
-            </p>
-          )}
+
+          <button
+            type="button"
+            className="admin-field__toggle"
+            onClick={() => setShowPassword((v) => !v)}
+            aria-label={toggleLabel}
+            aria-pressed={showPassword}
+            title={toggleLabel}
+          >
+            <EyeIcon hidden={showPassword} />
+          </button>
         </div>
 
-        <button type="submit" className="admin-submit">
-          Sign in
-        </button>
+        {hasError && (
+          <p id={errorId} className="admin-error" role="alert">
+            Incorrect password. Please try again.
+          </p>
+        )}
+      </div>
 
-        <p className="admin-card__footer">
-          Authorized personnel only.
-        </p>
-      </form>
-    </main>
+      <button type="submit" className="admin-submit">
+        Sign in
+      </button>
+
+      <p className="admin-card__footer">Authorized personnel only.</p>
+    </form>
   );
-} 
+}
+
+function EyeIcon({ hidden }: { hidden: boolean }) {
+  return hidden ? (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+      <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" />
+      <line x1="1" y1="1" x2="23" y2="23" />
+    </svg>
+  ) : (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+  }
