@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LoginForm } from "./login-form";
+import { LoginForm } from "./loginform";
 
 export const metadata: Metadata = {
   title: "Admin Login",
