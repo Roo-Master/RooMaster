@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Analytics from "@/components/Analytics";
+import ScrollProgress from "@/components/ScrollProgress";
+import NeuralBackground from "@/components/NeuralBackground";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -56,6 +58,8 @@ export default function RootLayout({
             }),
           }}
         />
+        <NeuralBackground />
+        <ScrollProgress />
         <a className="skip-link" href="#main">
           Skip to content
         </a>
